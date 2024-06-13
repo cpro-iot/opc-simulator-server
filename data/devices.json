@@ -1,0 +1,121 @@
+{
+    "GDA-c2019_1": {
+        "name": "Gasdruckanlage",
+        "items": [
+            {
+                "name": "Rohr vorne",
+                "id": "ns=0;b=1000",
+                "items": [
+                    {
+                        "id": "ns=1;b=1001BBEE",
+                        "name": "Druck Rohr vorne, erstes Segment",
+                        "type": "Double",
+                        "value": 26,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 2.5
+                        },
+                        "randomize": {
+                            "min": 1,
+                            "max": 9
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "id": "ns=1;b=1002BBEE",
+                        "name": "Druck Rohr vorne, zweites Segment",
+                        "type": "Double",
+                        "value": 29,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 2.5
+                        },
+                        "randomize": {
+                            "min": 1,
+                            "max": 5
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "id": "ns=1;b=1003BBEE",
+                        "name": "Druck Rohr vorne, drittes Segment",
+                        "type": "Double",
+                        "value": 31,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 2.5
+                        },
+                        "randomize": {
+                            "min": 1,
+                            "max": 3
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Rohr hinten",
+                "id": "ns=0;b=2000",
+                "items": [
+                    {
+                        "id": "ns=1;b=2001AAFF",
+                        "name": "Druck Rohr hinten, erstes Segment",
+                        "type": "Double",
+                        "value": 26,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 2.5
+                        },
+                        "randomize": {
+                            "min": 1,
+                            "max": 9
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "id": "ns=1;b=2002AAFF",
+                        "name": "Druck Rohr hinten, zweites Segment",
+                        "type": "Double",
+                        "value": 29,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 2.5
+                        },
+                        "randomize": {
+                            "min": 1,
+                            "max": 5
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "id": "ns=1;b=2003AAFF",
+                        "name": "Druck Rohr hinten, drittes Segment",
+                        "type": "Double",
+                        "value": 31,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 2.5
+                        },
+                        "randomize": {
+                            "min": 1,
+                            "max": 3
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
