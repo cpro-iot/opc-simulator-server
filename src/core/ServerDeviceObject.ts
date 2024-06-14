@@ -29,7 +29,7 @@ export default class ServerDeviceObject {
       const deviceSubFolder = this.registerDeviceFolderNode(owner, node as DeviceFolder);
       (node as DeviceFolder).items.forEach((item) => this.registerDeviceNode(deviceSubFolder, item));
     } else  {
-      this.registerDeviceObjectNode(owner, node as DeviceNode);
+      this.registerDeviceVariableNode(owner, node as DeviceNode);
     }
   }
 
@@ -38,7 +38,7 @@ export default class ServerDeviceObject {
     return this.namespace.addFolder(owner, { browseName: folder.name });
   }
 
-  private registerDeviceObjectNode(owner: UAFolder, node: DeviceNode) {
+  private registerDeviceVariableNode(owner: UAFolder, node: DeviceNode) {
     console.log(`Assembling node: ${node.name}`);
     let _variableValue = node.value;
 
@@ -100,6 +100,16 @@ export default class ServerDeviceObject {
           },
           (interval || 1) * 1000,
         ) : console.error("Can't randomize non number value");
+    }
+
+    if(type === 'sinus') {
+      typeof node.value === "number" ?
+        setInterval(
+          () => {
+            node.value = +(node.simulation?.sinus?.amplitude || 0) * Math.sin(Date.now() / 1000);
+          },
+          (interval || 1) * 1000,
+        ) : console.error("Can't sinus non number value");
     }
   }
 

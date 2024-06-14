@@ -56,6 +56,22 @@
                         "valueMethods": [
                             "get"
                         ]
+                    },
+                    {
+                        "id": "ns=1;b=104BBEE",
+                        "name": "Druck Rohr vorne, viertes Segment",
+                        "type": "Double",
+                        "value": 26,
+                        "simulation": {
+                            "type": "sinus",
+                            "interval": 2.5
+                        },
+                        "sinus": {
+                            "amplitude": 5
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
                     }
                 ]
             },
