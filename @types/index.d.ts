@@ -10,7 +10,7 @@ export interface DeviceNode {
     id: string;
     name: string;
     type: DataType;
-    value: number;
+    value: number | string | boolean;
     valueMethods: ('set' | 'get')[];
     simulation?: {
         type: 'increment' | 'decrement' | 'randomize';

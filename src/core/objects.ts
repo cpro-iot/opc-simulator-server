@@ -1,26 +1,43 @@
-import { Namespace, Variant, StatusCodes, StatusCode, UAObjectsFolder, UAFolder } from 'node-opcua';
+import { Namespace, Variant, StatusCodes, StatusCode, UAObjectsFolder, UAFolder, DataType } from 'node-opcua';
 import { DeviceNode, DeviceFolder } from '../../@types/index';
+
+function inferValueType(value: string | number | boolean) {
+    if (typeof value === 'string') {
+        return DataType.String;
+    }
+    if (typeof value === 'number') {
+        return DataType.Double;
+    }
+    if (typeof value === 'boolean') {
+        return DataType.Boolean;
+    }
+
+    return DataType.Null;
+}
 
 function enableValueSimulation(node: DeviceNode) {
     const { type, value, interval } = node.simulation || {};
     if (type === 'increment') {
-        setInterval(() => (node.value += value || 1), (interval || 1) * 1000);
+        typeof node.value === "number" ?
+        setInterval(() => ((node.value as number) += value || 1), (interval || 1) * 1000) : console.error("Can't increment non number value");
     }
 
     if (type === 'decrement') {
-        setInterval(() => (node.value -= value || 1), (interval || 1) * 1000);
+        typeof node.value === "number" ?
+        setInterval(() => ((node.value as number) -= value || 1), (interval || 1) * 1000) : console.error("Can't decrement non number value");
     }
 
     if (type === 'randomize') {
         // write a randomize function for the following object: randomize?: { min: number; max: number }
+        typeof node.value === "number" ?
         setInterval(
             () => {
                 const min = Math.random() * (node.simulation?.randomize?.max || 1);
                 const max = Math.random() * (node.simulation?.randomize?.min || 1);
-                node.value = +(node.value + min - max).toFixed(2);
+                node.value = +((node.value as number) + min - max).toFixed(2);
             },
             (interval || 1) * 1000,
-        );
+        ) : console.error("Can't randomize non number value");
     }
 }
 
@@ -32,14 +49,14 @@ function addObjectNode(namespace: Namespace, owner: UAFolder, node: DeviceNode) 
         enableValueSimulation(node);
     }
 
-    const assembleVariableValue = (variableValue: number) => {
+    const assembleVariableValue = (variableValue: string | number | boolean) => {
         let _value: { get: () => Variant | StatusCode; set: () => Variant | StatusCode } = {
             get: () => StatusCodes.BadNotReadable,
             set: () => StatusCodes.BadNotWritable,
         };
 
         if (node.valueMethods.includes('get')) {
-            _value.get = () => new Variant({ dataType: node.type, value: node.value });
+            _value.get = () => new Variant({ dataType: inferValueType(node.value), value: node.value });
         }
 
         if (node.valueMethods.includes('set')) {
@@ -56,7 +73,7 @@ function addObjectNode(namespace: Namespace, owner: UAFolder, node: DeviceNode) 
         componentOf: owner,
         nodeId: node.id,
         browseName: node.name,
-        dataType: node.type,
+        dataType: inferValueType(node.value),
         minimumSamplingInterval: 250,
         value: assembleVariableValue(_variableValue),
     });
