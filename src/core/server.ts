@@ -16,9 +16,9 @@ server.on('post_initialize', () => {
     for (const device in devices) {
         const deviceObject: any = (devices as Record<string, any>)[device];
         const serverDeviceObject = new ServerDeviceObject(server, deviceObject).init();
-        console.log(serverDeviceObject)
     }
 });
+
 const start = async () => {
     try {
         await server.initialize();

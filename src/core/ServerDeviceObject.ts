@@ -63,8 +63,6 @@ export default class ServerDeviceObject {
       set: () => StatusCodes.BadNotWritable,
     };
 
-    console.log(node)
-
     if (node.valueMethods.includes('get')) {
       _value.get = () => new Variant({ dataType: this.inferValueType(node.value), value: node.value });
     }
