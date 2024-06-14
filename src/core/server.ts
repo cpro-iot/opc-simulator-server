@@ -1,6 +1,7 @@
 import { OPCUAServer } from 'node-opcua';
 import devices from '../../data/devices.json';
 import ServerDeviceObject from './ServerDeviceObject';
+import { DeviceFolder } from '../../@types';
 
 const server = new OPCUAServer({
     port: 4840,
@@ -14,7 +15,7 @@ const server = new OPCUAServer({
 
 server.on('post_initialize', () => {
     for (const device in devices) {
-        const deviceObject: any = (devices as Record<string, any>)[device];
+        const deviceObject: DeviceFolder = (devices as Record<string, any>)[device];
         const serverDeviceObject = new ServerDeviceObject(server, deviceObject).init();
     }
 });
