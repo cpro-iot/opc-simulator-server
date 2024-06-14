@@ -86,7 +86,6 @@ export default class ServerDeviceObject {
     }
 
     if (type === 'randomize') {
-      // write a randomize function for the following object: randomize?: { min: number; max: number }
       typeof node.value === "number" ?
         setInterval(
           () => {
@@ -99,10 +98,13 @@ export default class ServerDeviceObject {
     }
 
     if(type === 'sinus') {
+      let t = 1;
       typeof node.value === "number" ?
         setInterval(
           () => {
-            node.value = +(node.simulation?.sinus?.amplitude || 0) * Math.sin(Date.now() / 1000);
+            node.value = +(node.simulation?.sinus?.amplitude || 1) * (Math.sin(t / 50) + (node.simulation?.sinus?.offset || 0));
+            t ++;
+            console.log(node.value, node.simulation?.sinus?.amplitude)
           },
           (interval || 1) * 1000,
         ) : console.error("Can't sinus non number value");

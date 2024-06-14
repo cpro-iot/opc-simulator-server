@@ -13,11 +13,11 @@
                         "value": 26,
                         "simulation": {
                             "type": "randomize",
-                            "interval": 2.5
-                        },
-                        "randomize": {
-                            "min": 1,
-                            "max": 9
+                            "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 9
+                            }
                         },
                         "valueMethods": [
                             "get"
@@ -30,11 +30,11 @@
                         "value": 29,
                         "simulation": {
                             "type": "randomize",
-                            "interval": 2.5
-                        },
-                        "randomize": {
-                            "min": 1,
-                            "max": 5
+                            "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 5
+                            }
                         },
                         "valueMethods": [
                             "get"
@@ -47,11 +47,11 @@
                         "value": 31,
                         "simulation": {
                             "type": "randomize",
-                            "interval": 2.5
-                        },
-                        "randomize": {
-                            "min": 1,
-                            "max": 3
+                            "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 3
+                            }
                         },
                         "valueMethods": [
                             "get"
@@ -64,10 +64,11 @@
                         "value": 26,
                         "simulation": {
                             "type": "sinus",
-                            "interval": 2.5
-                        },
-                        "sinus": {
-                            "amplitude": 5
+                            "interval": 0.1,
+                            "sinus": {
+                                "amplitude": 20,
+                                "offset": 0
+                            }
                         },
                         "valueMethods": [
                             "get"
@@ -86,11 +87,11 @@
                         "value": 26,
                         "simulation": {
                             "type": "randomize",
-                            "interval": 2.5
-                        },
-                        "randomize": {
-                            "min": 1,
-                            "max": 9
+                            "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 9
+                            }
                         },
                         "valueMethods": [
                             "get"
@@ -103,11 +104,11 @@
                         "value": 29,
                         "simulation": {
                             "type": "randomize",
-                            "interval": 2.5
-                        },
-                        "randomize": {
-                            "min": 1,
-                            "max": 5
+                            "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 5
+                            }
                         },
                         "valueMethods": [
                             "get"
@@ -120,11 +121,11 @@
                         "value": 31,
                         "simulation": {
                             "type": "randomize",
-                            "interval": 2.5
-                        },
-                        "randomize": {
-                            "min": 1,
-                            "max": 3
+                            "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 3
+                            }
                         },
                         "valueMethods": [
                             "get"
