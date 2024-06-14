@@ -1,6 +1,6 @@
-import { OPCUAServer, Namespace, UAObjectsFolder } from 'node-opcua';
-import { registerDeviceObject } from './objects';
+import { OPCUAServer } from 'node-opcua';
 import devices from '../../data/devices.json';
+import ServerDeviceObject from './ServerDeviceObject';
 
 const server = new OPCUAServer({
     port: 4840,
@@ -13,13 +13,10 @@ const server = new OPCUAServer({
 });
 
 server.on('post_initialize', () => {
-    const addressSpace = server.engine.addressSpace;
-    const namespace = addressSpace?.getOwnNamespace() as Namespace;
-    const objectsFolder = addressSpace?.rootFolder.objects as UAObjectsFolder;
-
     for (const device in devices) {
         const deviceObject: any = (devices as Record<string, any>)[device];
-        registerDeviceObject(namespace, objectsFolder, deviceObject);
+        const serverDeviceObject = new ServerDeviceObject(server, deviceObject).init();
+        console.log(serverDeviceObject)
     }
 });
 const start = async () => {
