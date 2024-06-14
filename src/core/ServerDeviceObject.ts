@@ -1,17 +1,13 @@
-import { AddressSpace, Namespace, OPCUAServer, UAFolder, DataType, UAObjectsFolder, Variant, StatusCodes, StatusCode, VariantT } from "node-opcua";
+import { Namespace, OPCUAServer, UAFolder, DataType, UAObjectsFolder, Variant, StatusCodes, StatusCode, VariantT } from "node-opcua";
 import { DeviceFolder, DeviceNode } from "../../@types";
 
 export default class ServerDeviceObject {
-  private server: OPCUAServer;
   private device: DeviceFolder;
-  private addressSpace: AddressSpace;
   private namespace: Namespace;
   private objectsFolder: UAObjectsFolder;
 
   constructor(server: OPCUAServer, device: DeviceFolder) {
-    this.server = server;
     this.device = device;
-    this.addressSpace = server.engine.addressSpace as AddressSpace;
     this.namespace = server.engine.addressSpace?.getOwnNamespace() as Namespace;
     this.objectsFolder = server.engine.addressSpace?.rootFolder.objects as UAObjectsFolder;
   }
@@ -43,7 +39,7 @@ export default class ServerDeviceObject {
     let _variableValue = node.value;
 
     if (node.simulation) {
-      console.log(`Enabling value simulation for '${node.name}'`);
+      console.log(`Enabling '${node.simulation.type}' simulation for '${node.name}'`);
       this.simulateNodeValue(node);
     }
 
