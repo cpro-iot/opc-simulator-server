@@ -104,7 +104,6 @@ export default class ServerDeviceObject {
           () => {
             node.value = +(node.simulation?.sinus?.amplitude || 1) * (Math.sin(t / 50) + (node.simulation?.sinus?.offset || 0));
             t ++;
-            console.log(node.value, node.simulation?.sinus?.amplitude)
           },
           (interval || 1) * 1000,
         ) : console.error("Can't sinus non number value");
