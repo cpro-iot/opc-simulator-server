@@ -88,31 +88,23 @@ export default class ServerDeviceObject {
         }
 
         if (type === 'randomize') {
-            typeof node.value === 'number'
-                ? setInterval(
-                      () => {
-                          const min = Math.random() * (node.simulation?.randomize?.max || 1);
-                          const max = Math.random() * (node.simulation?.randomize?.min || 1);
-                          node.value = +((node.value as number) + min - max).toFixed(2);
-                      },
-                      (interval || 1) * 1000,
-                  )
-                : console.error("Can't randomize non number value");
+            function randomize() {
+                const min = Math.random() * (node.simulation?.randomize?.max || 1);
+                const max = Math.random() * (node.simulation?.randomize?.min || 1);
+                node.value = +((node.value as number) + min - max).toFixed(2);
+            }
+            typeof node.value === 'number' ? setInterval(randomize, (interval || 1) * 1000) : console.error("Can't randomize non number value");
         }
 
         if (type === 'sinus') {
             let t = 1;
-            typeof node.value === 'number'
-                ? setInterval(
-                      () => {
-                          const sinus = +(node.simulation?.sinus?.amplitude || 1) * Math.sin(t / 50);
-                          const offset = +(node.simulation?.sinus?.offset || 0);
-                          node.value = +(sinus + offset).toFixed(2);
-                          if (t++ > 32767) t = 1;
-                      },
-                      (interval || 1) * 1000,
-                  )
-                : console.error("Can't sinus non number value");
+            function sinus() {
+                const sinus = +(node.simulation?.sinus?.amplitude || 1) * Math.sin(t / 50);
+                const offset = +(node.simulation?.sinus?.offset || 0);
+                node.value = +(sinus + offset).toFixed(2);
+                if (t++ > 32767) t = 1;
+            }
+            typeof node.value === 'number' ? setInterval(sinus, (interval || 1) * 1000) : console.error("Can't sinus non number value");
         }
     }
 
