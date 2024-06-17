@@ -31,16 +31,13 @@ export default class ServerDeviceObject {
     }
 
     private registerDeviceFolderNode(owner: UAFolder, folder: DeviceFolder) {
-        Logger.info(`Assembling folder: ${folder.name}`);
         return this.namespace.addFolder(owner, { browseName: folder.name });
     }
 
     private registerDeviceVariableNode(owner: UAFolder, node: DeviceNode) {
-        Logger.info(`Assembling node: ${node.name}`);
         let _variableValue = node.value;
 
         if (node.simulation) {
-            Logger.info(`Enabling '${node.simulation.type}' simulation for '${node.name}'`);
             this.simulateNodeValue(node);
         }
 

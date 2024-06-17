@@ -1,6 +1,7 @@
 import { OPCUAServer } from 'node-opcua';
 import ServerDeviceObject from './ServerDeviceObject';
 import { DeviceFolder } from '../../@types';
+import Logger from './Logger';
 
 export default class OpcServer {
     private server: OPCUAServer;
@@ -31,6 +32,7 @@ export default class OpcServer {
         this.server.on('post_initialize', () => {
             for (const device in this.devices) {
                 const deviceObject: DeviceFolder = devices[device];
+                this.printDeviceFolderStructure(deviceObject);
                 const serverDeviceObject = new ServerDeviceObject(this.server, deviceObject).init();
             }
         });
@@ -44,5 +46,18 @@ export default class OpcServer {
             console.error('Failed to start server', error);
             process.exit(1);
         }
+    }
+
+    private printDeviceFolderStructure(folder: DeviceFolder) {
+        Logger.info(`${folder.name}`);
+        folder.items.forEach((item, index) => {
+            if (item.hasOwnProperty('items')) {
+                this.printDeviceFolderStructure(item as DeviceFolder);
+            } else if (index === folder.items.length - 1) {
+                Logger.info(`└─ ${item.name}`);
+            } else {
+                Logger.info(`├─ ${item.name}`);
+            }
+        });
     }
 }
