@@ -43,20 +43,20 @@ export default class OpcServer {
             await this.server.initialize();
             await this.server.start();
         } catch (error) {
-            console.error('Failed to start server', error);
+            Logger.error('Failed to start OPC UA server', error);
             process.exit(1);
         }
     }
 
     private printDeviceFolderStructure(folder: DeviceFolder) {
-        Logger.info(`${folder.name}`);
+        Logger.info(`${folder.name} [Folder]`);
         folder.items.forEach((item, index) => {
             if (item.hasOwnProperty('items')) {
                 this.printDeviceFolderStructure(item as DeviceFolder);
             } else if (index === folder.items.length - 1) {
-                Logger.info(`└─ ${item.name}`);
+                Logger.info(`└─ ${item.name} [Variable]`);
             } else {
-                Logger.info(`├─ ${item.name}`);
+                Logger.info(`├─ ${item.name} [Variable]`);
             }
         });
     }
