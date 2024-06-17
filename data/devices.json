@@ -66,8 +66,8 @@
                             "type": "sinus",
                             "interval": 0.1,
                             "sinus": {
-                                "amplitude": 20,
-                                "offset": 0
+                                "amplitude": 5,
+                                "offset": 26
                             }
                         },
                         "valueMethods": [
