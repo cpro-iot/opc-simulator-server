@@ -14,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-opcua": "^2.124.0"
+    "node-opcua": "^2.124.0",
+    "pino": "^9.2.0",
+    "pino-pretty": "^11.2.1"
   },
   "devDependencies": {
     "eslint": "^9.3.0",

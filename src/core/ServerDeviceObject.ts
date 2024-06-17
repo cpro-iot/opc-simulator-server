@@ -1,5 +1,6 @@
 import { Namespace, OPCUAServer, UAFolder, DataType, UAObjectsFolder, Variant, StatusCodes, StatusCode, VariantT } from 'node-opcua';
 import { DeviceFolder, DeviceNode } from '../../@types';
+import Logger from './Logger';
 
 export default class ServerDeviceObject {
     private device: DeviceFolder;
@@ -30,16 +31,16 @@ export default class ServerDeviceObject {
     }
 
     private registerDeviceFolderNode(owner: UAFolder, folder: DeviceFolder) {
-        console.log(`Assembling folder: ${folder.name}`);
+        Logger.info(`Assembling folder: ${folder.name}`);
         return this.namespace.addFolder(owner, { browseName: folder.name });
     }
 
     private registerDeviceVariableNode(owner: UAFolder, node: DeviceNode) {
-        console.log(`Assembling node: ${node.name}`);
+        Logger.info(`Assembling node: ${node.name}`);
         let _variableValue = node.value;
 
         if (node.simulation) {
-            console.log(`Enabling '${node.simulation.type}' simulation for '${node.name}'`);
+            Logger.info(`Enabling '${node.simulation.type}' simulation for '${node.name}'`);
             this.simulateNodeValue(node);
         }
 
@@ -78,13 +79,13 @@ export default class ServerDeviceObject {
         if (type === 'increment') {
             typeof node.value === 'number'
                 ? setInterval(() => ((node.value as number) += value || 1), (interval || 1) * 1000)
-                : console.error("Can't increment non number value");
+                : Logger.error("Can't increment non number value");
         }
 
         if (type === 'decrement') {
             typeof node.value === 'number'
                 ? setInterval(() => ((node.value as number) -= value || 1), (interval || 1) * 1000)
-                : console.error("Can't decrement non number value");
+                : Logger.error("Can't decrement non number value");
         }
 
         if (type === 'randomize') {
@@ -93,7 +94,7 @@ export default class ServerDeviceObject {
                 const max = Math.random() * (node.simulation?.randomize?.min || 1);
                 node.value = +((node.value as number) + min - max).toFixed(2);
             }
-            typeof node.value === 'number' ? setInterval(randomize, (interval || 1) * 1000) : console.error("Can't randomize non number value");
+            typeof node.value === 'number' ? setInterval(randomize, (interval || 1) * 1000) : Logger.error("Can't randomize non number value");
         }
 
         if (type === 'sinus') {
@@ -104,7 +105,7 @@ export default class ServerDeviceObject {
                 node.value = +(sinus + offset).toFixed(2);
                 if (t++ > 32767) t = 1;
             }
-            typeof node.value === 'number' ? setInterval(sinus, (interval || 1) * 1000) : console.error("Can't sinus non number value");
+            typeof node.value === 'number' ? setInterval(sinus, (interval || 1) * 1000) : Logger.error("Can't sinus non number value");
         }
     }
 
