@@ -1,9 +1,9 @@
 {
     "GDA-c2019_1": {
-        "name": "Gasdruckanlage",
+        "name": "Wasserdruckanlage",
         "items": [
             {
-                "name": "Rohr vorne",
+                "name": "Pipeline Süd",
                 "id": "ns=0;b=1000",
                 "items": [
                     {
@@ -17,7 +17,7 @@
                     },
                     {
                         "id": "ns=1;b=1001BBEE",
-                        "name": "Druck Rohr vorne, erstes Segment",
+                        "name": "Druck Pipeline Süd, erstes Segment",
                         "value": 26,
                         "simulation": {
                             "type": "randomize",
@@ -33,7 +33,7 @@
                     },
                     {
                         "id": "ns=1;b=1002BBEE",
-                        "name": "Druck Rohr vorne, zweites Segment",
+                        "name": "Druck Pipeline Süd, zweites Segment",
                         "value": 29,
                         "simulation": {
                             "type": "randomize",
@@ -49,7 +49,7 @@
                     },
                     {
                         "id": "ns=1;b=1003BBEE",
-                        "name": "Druck Rohr vorne, drittes Segment",
+                        "name": "Druck Pipeline Süd, drittes Segment",
                         "value": 31,
                         "simulation": {
                             "type": "randomize",
@@ -65,7 +65,7 @@
                     },
                     {
                         "id": "ns=1;b=104BBEE",
-                        "name": "Druck Rohr vorne, viertes Segment",
+                        "name": "Druck Pipeline Süd, viertes Segment",
                         "value": 26,
                         "simulation": {
                             "type": "sinus",
@@ -82,12 +82,12 @@
                 ]
             },
             {
-                "name": "Rohr hinten",
+                "name": "Pipeline Nord",
                 "id": "ns=0;b=2000",
                 "items": [
                     {
                         "id": "ns=1;b=2001AAFF",
-                        "name": "Druck Rohr hinten, erstes Segment",
+                        "name": "Druck Pipeline Nord, erstes Segment",
                         "value": 26,
                         "simulation": {
                             "type": "randomize",
@@ -103,7 +103,7 @@
                     },
                     {
                         "id": "ns=1;b=2002AAFF",
-                        "name": "Druck Rohr hinten, zweites Segment",
+                        "name": "Druck Pipeline Nord, zweites Segment",
                         "value": 29,
                         "simulation": {
                             "type": "randomize",
@@ -119,11 +119,140 @@
                     },
                     {
                         "id": "ns=1;b=2003AAFF",
-                        "name": "Druck Rohr hinten, drittes Segment",
+                        "name": "Druck Pipeline Nord, drittes Segment",
                         "value": 31,
                         "simulation": {
                             "type": "randomize",
                             "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "PDB-c2023_1": {
+        "name": "Zentrale Thermostatstation",
+        "items": [
+            {
+                "name": "Thermostatstation Marketingbüro",
+                "id": "ns=0;b=2000",
+                "items": [
+                    {
+                        "name": "Thermostat Eingangsbereich",
+                        "id": "ns=1;b=2000EEBB",
+                        "value": 20.5,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "name": "Thermostat Flur",
+                        "id": "ns=1;b=2001MMBB",
+                        "value": 21.5,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "name": "Thermostat Büro 1",
+                        "id": "ns=1;b=2002MMBB",
+                        "value": 21.5,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "name": "Thermostat Büro 2",
+                        "id": "ns=1;b=2003MMBB",
+                        "value": 22,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Thermostatstation Fertigungshalle Nord",
+                "id": "ns=0;b=3000",
+                "items": [
+                    {
+                        "name": "Thermostat Lager",
+                        "id": "ns=1;b=3000LLBB",
+                        "value": 18.5,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 2.5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "name": "Thermostat Shopfloor",
+                        "id": "ns=1;b=3001SSFF",
+                        "value": 23,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 5,
+                            "randomize": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
+                    },
+                    {
+                        "name": "Thermostat Büro 1",
+                        "id": "ns=1;b=3002LLAA",
+                        "value": 21.5,
+                        "simulation": {
+                            "type": "randomize",
+                            "interval": 5,
                             "randomize": {
                                 "min": 1,
                                 "max": 3
