@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events';
 import OpcServer from './opc/OpcServer';
-import Validator from './Validator';
-import Logger from './Logger';
+import Validator from './utils/Validator';
+import Logger from './utils/Logger';
 import { DeviceFolder } from '../../@types';
 
 export default class Runtime extends EventEmitter {

@@ -1,4 +1,4 @@
-import Logger from '../core/Logger';
+import Logger from '../core/utils/Logger';
 import { ErrorObject } from 'ajv';
 
 export default class CproValidationError extends Error {

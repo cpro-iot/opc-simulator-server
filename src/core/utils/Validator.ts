@@ -1,5 +1,5 @@
 import Ajv, { ValidateFunction } from 'ajv';
-import CproValidationError from '../errors/CproValidationError';
+import CproValidationError from '../../errors/CproValidationError';
 
 export default class Validator {
     private validate: ValidateFunction<unknown>;

@@ -1,7 +1,7 @@
 import { OPCUAServer } from 'node-opcua';
 import ServerDeviceObject from './OpcServerDeviceObject';
 import { DeviceFolder } from '../../../@types';
-import Logger from '../Logger';
+import Logger from '../utils/Logger';
 
 export default class OpcServer {
     private server: OPCUAServer;

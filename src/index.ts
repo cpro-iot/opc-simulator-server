@@ -1,6 +1,6 @@
 import devices from '../data/devices.json';
 import devicesSchema from '../schemata/devices.json';
-import Logger from './core/Logger';
+import Logger from './core/utils/Logger';
 import Runtime from './core/Runtime';
 
 function main() {
