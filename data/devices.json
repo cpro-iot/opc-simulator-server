@@ -9,7 +9,7 @@
                     {
                         "id": "ns=1;b=1000AABB",
                         "name": "Aktiv",
-                        "value": "true",
+                        "value": true,
                         "valueMethods": [
                             "get",
                             "set"

@@ -1,6 +1,6 @@
 import { Namespace, OPCUAServer, UAFolder, DataType, UAObjectsFolder, Variant, StatusCodes, StatusCode, VariantT } from 'node-opcua';
-import { DeviceFolder, DeviceNode } from '../../@types';
-import Logger from './Logger';
+import { DeviceFolder, DeviceNode } from '../../../@types';
+import Logger from '../Logger';
 
 export default class ServerDeviceObject {
     private device: DeviceFolder;

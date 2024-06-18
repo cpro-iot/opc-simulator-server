@@ -11,7 +11,7 @@ export default class Validator {
     public validateDevicesSchema(data: any) {
         const result = this.validate(data);
         if (!result) {
-            throw new CproValidationError('Failed to validate device data', this.validate.errors);
+            throw new CproValidationError('Failed to validate OPC UA device data', this.validate.errors);
         }
         return [result, this.validate.errors];
     }
