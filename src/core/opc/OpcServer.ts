@@ -42,6 +42,7 @@ export default class OpcServer {
         try {
             await this.server.initialize();
             await this.server.start();
+            Logger.info('OPC UA server started successfully');
         } catch (error) {
             Logger.error('Failed to start OPC UA server', error);
             process.exit(1);

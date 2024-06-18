@@ -18,10 +18,8 @@ export default class Runtime extends EventEmitter {
     public async init() {
         try {
             this.Validator.validateDevicesSchema(this.devices);
-            Logger.info('Devices schema is valid');
 
             await this.OpcServer.start();
-            Logger.info('OPC UA server started successfully');
         } catch (error: any) {
             Logger.error(`Failed to start runtime`);
             this.emit('error', error);
