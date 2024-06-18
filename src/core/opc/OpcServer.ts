@@ -50,12 +50,13 @@ export default class OpcServer {
     }
 
     private printDeviceFolderStructure(folder: DeviceFolder) {
-        Logger.info(`${folder.name} [Folder]`);
+        Logger.info(`📁 ${folder.name} [Folder]`);
         folder.items.forEach((item, index) => {
             if (item.hasOwnProperty('items')) {
                 this.printDeviceFolderStructure(item as DeviceFolder);
             } else if (index === folder.items.length - 1) {
                 Logger.info(`└─ ${item.name} [Variable]`);
+                Logger.info(``);
             } else {
                 Logger.info(`├─ ${item.name} [Variable]`);
             }
