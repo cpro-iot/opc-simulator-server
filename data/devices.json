@@ -23,6 +23,7 @@
                             "type": "randomize",
                             "interval": 2.5,
                             "randomize": {
+                                "base": 26,
                                 "min": 1,
                                 "max": 9
                             }
@@ -39,6 +40,7 @@
                             "type": "randomize",
                             "interval": 2.5,
                             "randomize": {
+                                "base": 29,
                                 "min": 1,
                                 "max": 5
                             }
@@ -55,6 +57,7 @@
                             "type": "randomize",
                             "interval": 2.5,
                             "randomize": {
+                                "base": 31,
                                 "min": 1,
                                 "max": 3
                             }
@@ -93,6 +96,7 @@
                             "type": "randomize",
                             "interval": 2.5,
                             "randomize": {
+                                "base": 26,
                                 "min": 1,
                                 "max": 9
                             }
@@ -109,6 +113,7 @@
                             "type": "randomize",
                             "interval": 2.5,
                             "randomize": {
+                                "base": 29,
                                 "min": 1,
                                 "max": 5
                             }
@@ -125,6 +130,7 @@
                             "type": "randomize",
                             "interval": 2.5,
                             "randomize": {
+                                "base": 31,
                                 "min": 1,
                                 "max": 3
                             }
@@ -152,6 +158,7 @@
                             "type": "randomize",
                             "interval": 5,
                             "randomize": {
+                                "base": 20.5,
                                 "min": 1,
                                 "max": 5
                             }
@@ -168,6 +175,7 @@
                             "type": "randomize",
                             "interval": 5,
                             "randomize": {
+                                "base": 21.5,
                                 "min": 1,
                                 "max": 4
                             }
@@ -184,6 +192,7 @@
                             "type": "randomize",
                             "interval": 5,
                             "randomize": {
+                                "base": 21.5,
                                 "min": 1,
                                 "max": 3
                             }
@@ -200,6 +209,7 @@
                             "type": "randomize",
                             "interval": 5,
                             "randomize": {
+                                "base": 22,
                                 "min": 1,
                                 "max": 2
                             }
@@ -222,6 +232,7 @@
                             "type": "randomize",
                             "interval": 2.5,
                             "randomize": {
+                                "base": 18.5,
                                 "min": 1,
                                 "max": 6
                             }
@@ -238,6 +249,7 @@
                             "type": "randomize",
                             "interval": 5,
                             "randomize": {
+                                "base": 23,
                                 "min": 1,
                                 "max": 3
                             }
@@ -254,6 +266,7 @@
                             "type": "randomize",
                             "interval": 5,
                             "randomize": {
+                                "base": 21.5,
                                 "min": 1,
                                 "max": 3
                             }

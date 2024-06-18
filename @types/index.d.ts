@@ -13,10 +13,10 @@ export interface DeviceNode {
     value: number | string | boolean;
     valueMethods: ('set' | 'get')[];
     simulation?: {
-        type: 'increment' | 'decrement' | 'randomize' | 'sinus';
+        type: 'increase' | 'decrease' | 'randomize' | 'sinus';
         value: number;
         interval: number;
-        randomize?: { min: number; max: number };
+        randomize?: { min: number; max: number; base: number };
         sinus?: { amplitude: number, offset: number }
     };
 }

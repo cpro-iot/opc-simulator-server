@@ -73,23 +73,24 @@ export default class ServerDeviceObject {
 
     private simulateNodeValue(node: DeviceNode) {
         const { type, value, interval } = node.simulation || {};
-        if (type === 'increment') {
+        if (type === 'increase') {
             typeof node.value === 'number'
                 ? setInterval(() => ((node.value as number) += value || 1), (interval || 1) * 1000)
-                : Logger.error("Can't increment non number value");
+                : Logger.error("Can't increase non number value");
         }
 
-        if (type === 'decrement') {
+        if (type === 'decrease') {
             typeof node.value === 'number'
                 ? setInterval(() => ((node.value as number) -= value || 1), (interval || 1) * 1000)
-                : Logger.error("Can't decrement non number value");
+                : Logger.error("Can't decrease non number value");
         }
 
         if (type === 'randomize') {
             function randomize() {
+                const base = node.simulation?.randomize?.base || 0;
                 const min = Math.random() * (node.simulation?.randomize?.max || 1);
                 const max = Math.random() * (node.simulation?.randomize?.min || 1);
-                node.value = +((node.value as number) + min - max).toFixed(2);
+                node.value = +(base as number + min - max).toFixed(2);
             }
             typeof node.value === 'number' ? setInterval(randomize, (interval || 1) * 1000) : Logger.error("Can't randomize non number value");
         }

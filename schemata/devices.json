@@ -44,6 +44,8 @@
                                                 "type": {
                                                     "type": "string",
                                                     "enum": [
+                                                        "increase",
+                                                        "decrease",
                                                         "randomize",
                                                         "sinus"
                                                     ]

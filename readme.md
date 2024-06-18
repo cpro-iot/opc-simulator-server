@@ -13,8 +13,8 @@ Because there's not a single [free] OPC simulation server on the internet*
 - Deployable over docker without any hardware configuration
 - Supports OPC-UA `READ`, `WRITE`, `SUBSCRIBE` (and more) on object variables
 - Create your own objects and simulate variable changes:
-  - increment
-  - decrement
+  - increase
+  - decrease
   - randomize
   - sinus
 - Bring your own simulation config or use ours
