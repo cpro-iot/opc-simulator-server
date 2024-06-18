@@ -4,7 +4,7 @@ A simple OPC server that just works if you're trying to learn the protocol or ne
 
 ## Why?
 
-Because there's not a single [free] OPC simulation server on the internet*
+Because there's not a single [free] OPC simulation server on the internet that works*
 
 ## Features
 
