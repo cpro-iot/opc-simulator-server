@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+    app:
+        build:
+            dockerfile: dockerfiles/Dev.Dockerfile
+        volumes:
+            - ./:/app
+        ports:
+            - '4840:4840'
+    # vue_app_prod:
+    #   image: earthenlynx/vue_app:production
+    #   ports:
+    #     - "80:80"
