@@ -107,50 +107,76 @@ export default class ServerDeviceObject {
         }
 
         if (type === 'anomaly') {
-            let t = 0;
-            function anomaly() {
-                const belowMinTime = t <= +(node.simulation?.anomaly?.min || 5);
-                const reachedMaxTime = t >= +(node.simulation?.anomaly?.max || 30);
-                const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
+            function startAnomalySimulation() {
+                const anomalyDetectionInterval = 10000;
+                let t = 0;
+                let anomalyInterval: ReturnType<typeof setInterval>;
+                let isActive = true;
 
-                function increaseTimePassed() {
-                    Logger.debug(`Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
-                    t++;
-                }
+                function anomaly() {
+                    const belowMinTime = t <= +(node.simulation?.anomaly?.min || 5);
+                    const reachedMaxTime = t >= +(node.simulation?.anomaly?.max || 30);
+                    const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
 
-                function setAnomalyValue() {
-                    node.value = node.simulation?.anomaly?.targetValue as boolean|string|number;
-                    Logger.debug(`Conditions for anomaly met. Set node value to ${node.value}`)
-                    t = 0;
-                }
+                    function increaseTimePassed() {
+                        Logger.debug(`Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
+                        t++;
+                    }
 
-                function handleBetweenMixAndMax() {
-                    const relativeTimePassed = t / (node.simulation?.anomaly?.max || 1)
-                    const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
-                    Logger.debug(`Chance to trigger anomaly: ${chanceToTrigger}`)
-                    if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.85)) {
+                    function setAnomalyValue() {
+                        node.value = node.simulation?.anomaly?.targetValue as boolean | string | number;
+                        Logger.debug(`Conditions for anomaly met. Set node value to ${node.value}`)
+                        t = 0;
+                    }
+
+                    function handleBetweenMixAndMax() {
+                        const relativeTimePassed = t / (node.simulation?.anomaly?.max || 1)
+                        const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
+                        Logger.debug(`Chance to trigger anomaly: ${chanceToTrigger}`)
+                        if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.85)) {
+                            setAnomalyValue()
+                        } else {
+                            increaseTimePassed()
+                        }
+                    }
+
+                    function stopAnomalySimulation() {
+                        Logger.debug(`Node already set to anomaly value: ${node.value}`)
+                        isActive = false;
+                        clearInterval(anomalyInterval);
+                    }
+
+
+                    if (node.value === node.simulation?.anomaly?.targetValue) {
+                        stopAnomalySimulation()
+                        return;
+                    }
+
+                    if (belowMinTime) {
+                        increaseTimePassed();
+                    }
+                    if (reachedMaxTime) {
                         setAnomalyValue()
-                    } else {
-                        increaseTimePassed()
+                    }
+                    if (betweenMinAndMax) {
+                        handleBetweenMixAndMax();
                     }
                 }
-                if(node.value === node.simulation?.anomaly?.targetValue) {
-                    Logger.debug(`Node already set to anomaly value: ${node.value}`)
-                    return;
-                }
 
-                if (belowMinTime) {
-                    increaseTimePassed();
-                }
-                if (reachedMaxTime) {
-                    setAnomalyValue()
-                }
-                if (betweenMinAndMax) {
-                    handleBetweenMixAndMax();
-                }
+                // Start the anomaly simulation
+                anomalyInterval = setInterval(anomaly, (interval || 1) * 1000);
+
+                // Every 10 seconds, check if the anomaly should be restarted
+                setInterval(() => {
+                    if (!isActive) {
+                        Logger.debug(`Checking if anomaly should be triggered`)
+                        clearInterval(anomalyInterval)
+                        anomalyInterval = setInterval(anomaly, (interval || 1) * 1000);
+                    }
+                }, anomalyDetectionInterval);
             }
 
-            setInterval(anomaly, (interval || 1) * 1000);
+            startAnomalySimulation();
         }
     }
 
