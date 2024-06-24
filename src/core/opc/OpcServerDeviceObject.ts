@@ -119,7 +119,7 @@ export default class ServerDeviceObject {
                 }
 
                 function setAnomalyValue() {
-                    node.value = node.simulation?.anomaly?.targetValue || true;
+                    node.value = node.simulation?.anomaly?.targetValue as boolean|string|number;
                     Logger.info(`Conditions for anomaly met. Set node value to ${node.value}`)
                     t = 0;
                 }
@@ -134,6 +134,11 @@ export default class ServerDeviceObject {
                         increaseTimePassed()
                     }
                 }
+                if(node.value === node.simulation?.anomaly?.targetValue) {
+                    Logger.info(`Node already set to anomaly value: ${node.value}`)
+                    return;
+                }
+
                 if (belowMinTime) {
                     increaseTimePassed();
                 }
