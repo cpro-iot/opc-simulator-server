@@ -1,6 +1,7 @@
 import { Namespace, OPCUAServer, UAFolder, DataType, UAObjectsFolder, Variant, StatusCodes, StatusCode, VariantT, AttributeIds } from 'node-opcua';
 import { DeviceFolder, DeviceNode } from '../../../@types';
 import Logger from '../utils/Logger';
+import Simulator from '../utils/Simulator';
 
 export default class ServerDeviceObject {
     private device: DeviceFolder;
@@ -38,7 +39,7 @@ export default class ServerDeviceObject {
         let _variableValue = node.value;
 
         if (node.simulation) {
-            this.simulateNodeValue(node);
+            new Simulator(this.namespace, node).simulateNodeValue();
         }
 
         return this.namespace.addVariable({
@@ -69,151 +70,6 @@ export default class ServerDeviceObject {
         }
 
         return _value;
-    }
-
-    private simulateNodeValue(node: DeviceNode) {
-        const { type, value, interval, dependsOn } = node.simulation || {};
-        const self = this;
-
-        function handleIncrease() {
-            function increase() {
-
-                if(!(typeof node.value === 'number')) {
-                    Logger.error("Can't increase non number value");
-                    return
-                }
-
-                (node.value as number) += (value || 1);
-            }
-
-            function increaseDependingOnNodeValue() {
-                const { nodeNs, value: expectedValue } = dependsOn || { value: true };
-                if (!nodeNs) {
-                    Logger.error("Namespace of depending node missing");
-                    return;
-                }
-
-                const dependingNodeValue = self.getNodeValue(nodeNs);
-                if (!dependingNodeValue && dependingNodeValue !== false) {
-                    Logger.error(`Node with namespace ${nodeNs} not found`);
-                    return;
-                }
-                if (dependingNodeValue === expectedValue) {
-                    Logger.debug(`[Node ${node.id}]: Observed value of node "${dependsOn?.nodeNs}"->'${dependingNodeValue}' is equal to '${expectedValue}'.`)
-                    Logger.debug(`[Node ${node.id}]: Increasing this node's value by ${value}`)
-                    increase();
-                }
-            }
-            if (!dependsOn) {
-                increase();
-            } else {
-                increaseDependingOnNodeValue();
-            }
-        }
-
-        if (type === 'increase') {
-            setInterval(handleIncrease, (interval || 1) * 1000)
-        }
-
-        if (type === 'decrease') {
-            typeof node.value === 'number'
-                ? setInterval(() => ((node.value as number) -= value || 1), (interval || 1) * 1000)
-                : Logger.error("Can't decrease non number value");
-        }
-
-        if (type === 'randomize') {
-            function randomize() {
-                const base = node.simulation?.randomize?.base || 0;
-                const min = Math.random() * (node.simulation?.randomize?.max || 1);
-                const max = Math.random() * (node.simulation?.randomize?.min || 1);
-                node.value = +(base as number + min - max).toFixed(2);
-            }
-            typeof node.value === 'number' ? setInterval(randomize, (interval || 1) * 1000) : Logger.error("Can't randomize non number value");
-        }
-
-        if (type === 'sinus') {
-            let t = 1;
-            function sinus() {
-                const sinus = +(node.simulation?.sinus?.amplitude || 1) * Math.sin(t / 50);
-                const offset = +(node.simulation?.sinus?.offset || 0);
-                node.value = +(sinus + offset).toFixed(2);
-                if (t++ > 32767) t = 1;
-            }
-            typeof node.value === 'number' ? setInterval(sinus, (interval || 1) * 1000) : Logger.error("Can't sinus non number value");
-        }
-
-        if (type === 'anomaly') {
-            function startAnomalySimulation() {
-                const anomalyDetectionInterval = 10000;
-                let t = 0;
-                let anomalyInterval: ReturnType<typeof setInterval>;
-                let isActive = true;
-
-                function anomaly() {
-                    const belowMinTime = t <= +(node.simulation?.anomaly?.min || 5);
-                    const reachedMaxTime = t >= +(node.simulation?.anomaly?.max || 30);
-                    const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
-
-                    function increaseTimePassed() {
-                        Logger.debug(`[Node ${node.id}]: Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
-                        t++;
-                    }
-
-                    function setAnomalyValue() {
-                        node.value = node.simulation?.anomaly?.targetValue as boolean | string | number;
-                        Logger.debug(`[Node ${node.id}]: Conditions for anomaly met. Set node value to ${node.value}`)
-                        t = 0;
-                    }
-
-                    function handleBetweenMixAndMax() {
-                        const relativeTimePassed = t / (node.simulation?.anomaly?.max || 1)
-                        const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
-                        Logger.debug(`[Node ${node.id}]: Chance to trigger anomaly: ${chanceToTrigger}`)
-                        if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.85)) {
-                            setAnomalyValue()
-                        } else {
-                            increaseTimePassed()
-                        }
-                    }
-
-                    function stopAnomalySimulation() {
-                        Logger.debug(`[Node ${node.id}]: Already set to anomaly value: ${node.value}`)
-                        isActive = false;
-                        clearInterval(anomalyInterval);
-                    }
-
-
-                    if (node.value === node.simulation?.anomaly?.targetValue) {
-                        stopAnomalySimulation()
-                        return;
-                    }
-
-                    if (belowMinTime) {
-                        increaseTimePassed();
-                    }
-                    if (reachedMaxTime) {
-                        setAnomalyValue()
-                    }
-                    if (betweenMinAndMax) {
-                        handleBetweenMixAndMax();
-                    }
-                }
-
-                // Start the anomaly simulation
-                anomalyInterval = setInterval(anomaly, (interval || 1) * 1000);
-
-                // Every 10 seconds, check if the anomaly should be restarted
-                setInterval(() => {
-                    if (!isActive) {
-                        Logger.debug(`[Node ${node.id}]: Checking if anomaly should be triggered for node with id: "${node.id}"`)
-                        clearInterval(anomalyInterval)
-                        anomalyInterval = setInterval(anomaly, (interval || 1) * 1000);
-                    }
-                }, anomalyDetectionInterval);
-            }
-
-            startAnomalySimulation();
-        }
     }
 
     private inferValueType(value: string | number | boolean) {
