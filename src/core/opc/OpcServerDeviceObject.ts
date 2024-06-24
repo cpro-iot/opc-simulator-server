@@ -114,20 +114,20 @@ export default class ServerDeviceObject {
                 const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
 
                 function increaseTimePassed() {
-                    Logger.info(`Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
+                    Logger.debug(`Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
                     t++;
                 }
 
                 function setAnomalyValue() {
                     node.value = node.simulation?.anomaly?.targetValue as boolean|string|number;
-                    Logger.info(`Conditions for anomaly met. Set node value to ${node.value}`)
+                    Logger.debug(`Conditions for anomaly met. Set node value to ${node.value}`)
                     t = 0;
                 }
 
                 function handleBetweenMixAndMax() {
                     const relativeTimePassed = t / (node.simulation?.anomaly?.max || 1)
                     const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
-                    Logger.info(`Chance to trigger anomaly: ${chanceToTrigger}`)
+                    Logger.debug(`Chance to trigger anomaly: ${chanceToTrigger}`)
                     if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.85)) {
                         setAnomalyValue()
                     } else {
@@ -135,7 +135,7 @@ export default class ServerDeviceObject {
                     }
                 }
                 if(node.value === node.simulation?.anomaly?.targetValue) {
-                    Logger.info(`Node already set to anomaly value: ${node.value}`)
+                    Logger.debug(`Node already set to anomaly value: ${node.value}`)
                     return;
                 }
 
