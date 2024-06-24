@@ -305,6 +305,23 @@
                                 "threshold": 0.8
                             }
                         }
+                    },
+                    {
+                        "id": "ns=1;b=4002UUZZ",
+                        "name": "Gefertigte Mengen",
+                        "value": 0,
+                        "simulation": {
+                            "type": "increase",
+                            "interval": 1,
+                            "value": 1,
+                            "dependsOn": {
+                                "nodeNs": "ns=1;b=4001CCUU",
+                                "value": true
+                            }
+                        },
+                        "valueMethods": [
+                            "get"
+                        ]
                     }
                 ]
             }

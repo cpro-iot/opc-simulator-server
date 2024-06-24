@@ -1,4 +1,4 @@
-import { Namespace, OPCUAServer, UAFolder, DataType, UAObjectsFolder, Variant, StatusCodes, StatusCode, VariantT } from 'node-opcua';
+import { Namespace, OPCUAServer, UAFolder, DataType, UAObjectsFolder, Variant, StatusCodes, StatusCode, VariantT, AttributeIds } from 'node-opcua';
 import { DeviceFolder, DeviceNode } from '../../../@types';
 import Logger from '../utils/Logger';
 
@@ -72,11 +72,47 @@ export default class ServerDeviceObject {
     }
 
     private simulateNodeValue(node: DeviceNode) {
-        const { type, value, interval } = node.simulation || {};
+        const { type, value, interval, dependsOn } = node.simulation || {};
+        const self = this;
+
+        function handleIncrease() {
+            function increase() {
+
+                if(!(typeof node.value === 'number')) {
+                    Logger.error("Can't increase non number value");
+                    return
+                }
+
+                (node.value as number) += (value || 1);
+            }
+
+            function increaseDependingOnNodeValue() {
+                const { nodeNs, value: expectedValue } = dependsOn || { value: true };
+                if (!nodeNs) {
+                    Logger.error("Namespace of depending node missing");
+                    return;
+                }
+
+                const dependingNodeValue = self.getNodeValue(nodeNs);
+                if (!dependingNodeValue && dependingNodeValue !== false) {
+                    Logger.error(`Node with namespace ${nodeNs} not found`);
+                    return;
+                }
+                if (dependingNodeValue === expectedValue) {
+                    Logger.debug(`[Node ${node.id}]: Observed value of node "${dependsOn?.nodeNs}"->'${dependingNodeValue}' is equal to '${expectedValue}'.`)
+                    Logger.debug(`[Node ${node.id}]: Increasing this node's value by ${value}`)
+                    increase();
+                }
+            }
+            if (!dependsOn) {
+                increase();
+            } else {
+                increaseDependingOnNodeValue();
+            }
+        }
+
         if (type === 'increase') {
-            typeof node.value === 'number'
-                ? setInterval(() => ((node.value as number) += value || 1), (interval || 1) * 1000)
-                : Logger.error("Can't increase non number value");
+            setInterval(handleIncrease, (interval || 1) * 1000)
         }
 
         if (type === 'decrease') {
@@ -186,5 +222,9 @@ export default class ServerDeviceObject {
         if (typeof value === 'boolean') return DataType.Boolean;
 
         return DataType.Null;
+    }
+
+    private getNodeValue(nodeNs: string) {
+        return (this.namespace.findNode(nodeNs)?.readAttribute(null, AttributeIds.Value).value.value)
     }
 }

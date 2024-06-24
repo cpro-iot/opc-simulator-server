@@ -41,6 +41,21 @@
                                         "simulation": {
                                             "type": "object",
                                             "properties": {
+                                                "dependsOn": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "nodeNs": {
+                                                            "type": "string"
+                                                        },
+                                                        "value": {
+                                                            "type": ["number", "boolean", "string"]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "nodeNs",
+                                                        "value"
+                                                    ]
+                                                },
                                                 "type": {
                                                     "type": "string",
                                                     "enum": [
@@ -50,6 +65,9 @@
                                                         "sinus",
                                                         "anomaly"
                                                     ]
+                                                },
+                                                "value": {
+                                                    "type": ["number", "boolean", "string"]
                                                 },
                                                 "interval": {
                                                     "type": "number"
@@ -107,27 +125,11 @@
                                                         "targetValue"
                                                     ]
                                                 }
+
                                             },
                                             "required": [
                                                 "type",
                                                 "interval"
-                                            ],
-                                            "oneOf": [
-                                                {
-                                                    "required": [
-                                                        "randomize"
-                                                    ]
-                                                },
-                                                {
-                                                    "required": [
-                                                        "sinus"
-                                                    ]
-                                                },
-                                                {
-                                                    "required": [
-                                                        "anomaly"
-                                                    ]
-                                                }
                                             ]
                                         },
                                         "valueMethods": {

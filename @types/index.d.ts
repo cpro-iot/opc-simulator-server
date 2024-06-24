@@ -19,5 +19,6 @@ export interface DeviceNode {
         randomize?: { min: number; max: number; base: number };
         sinus?: { amplitude: number, offset: number }
         anomaly?: { min: number; max: number; targetValue: boolean|string|number, threshold: number };
+        dependsOn?: { nodeNs: string; value: string | boolean | number };
     };
 }
