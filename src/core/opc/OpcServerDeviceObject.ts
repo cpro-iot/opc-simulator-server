@@ -119,20 +119,20 @@ export default class ServerDeviceObject {
                     const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
 
                     function increaseTimePassed() {
-                        Logger.debug(`Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
+                        Logger.debug(`[Node ${node.id}]: Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
                         t++;
                     }
 
                     function setAnomalyValue() {
                         node.value = node.simulation?.anomaly?.targetValue as boolean | string | number;
-                        Logger.debug(`Conditions for anomaly met. Set node value to ${node.value}`)
+                        Logger.debug(`[Node ${node.id}]: Conditions for anomaly met. Set node value to ${node.value}`)
                         t = 0;
                     }
 
                     function handleBetweenMixAndMax() {
                         const relativeTimePassed = t / (node.simulation?.anomaly?.max || 1)
                         const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
-                        Logger.debug(`Chance to trigger anomaly: ${chanceToTrigger}`)
+                        Logger.debug(`[Node ${node.id}]: Chance to trigger anomaly: ${chanceToTrigger}`)
                         if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.85)) {
                             setAnomalyValue()
                         } else {
@@ -141,7 +141,7 @@ export default class ServerDeviceObject {
                     }
 
                     function stopAnomalySimulation() {
-                        Logger.debug(`Node already set to anomaly value: ${node.value}`)
+                        Logger.debug(`[Node ${node.id}]: Already set to anomaly value: ${node.value}`)
                         isActive = false;
                         clearInterval(anomalyInterval);
                     }
@@ -169,7 +169,7 @@ export default class ServerDeviceObject {
                 // Every 10 seconds, check if the anomaly should be restarted
                 setInterval(() => {
                     if (!isActive) {
-                        Logger.debug(`Checking if anomaly should be triggered`)
+                        Logger.debug(`[Node ${node.id}]: Checking if anomaly should be triggered for node with id: "${node.id}"`)
                         clearInterval(anomalyInterval)
                         anomalyInterval = setInterval(anomaly, (interval || 1) * 1000);
                     }
