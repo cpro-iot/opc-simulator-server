@@ -47,7 +47,8 @@
                                                         "increase",
                                                         "decrease",
                                                         "randomize",
-                                                        "sinus"
+                                                        "sinus",
+                                                        "anomaly"
                                                     ]
                                                 },
                                                 "interval": {
@@ -82,6 +83,29 @@
                                                         "amplitude",
                                                         "offset"
                                                     ]
+                                                },
+                                                "anomaly": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "min": {
+                                                            "type": "number"
+                                                        },
+                                                        "max": {
+                                                            "type": "number"
+                                                        },
+                                                        "ends": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "targetValue": {
+                                                            "type": ["number", "boolean", "string"]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "min",
+                                                        "max",
+                                                        "ends",
+                                                        "targetValue"
+                                                    ]
                                                 }
                                             },
                                             "required": [
@@ -97,6 +121,11 @@
                                                 {
                                                     "required": [
                                                         "sinus"
+                                                    ]
+                                                },
+                                                {
+                                                    "required": [
+                                                        "anomaly"
                                                     ]
                                                 }
                                             ]

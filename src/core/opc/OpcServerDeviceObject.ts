@@ -105,6 +105,48 @@ export default class ServerDeviceObject {
             }
             typeof node.value === 'number' ? setInterval(sinus, (interval || 1) * 1000) : Logger.error("Can't sinus non number value");
         }
+
+        if (type === 'anomaly') {
+            let t = 0;
+            function anomaly() {
+                const belowMinTime = t <= +(node.simulation?.anomaly?.min || 5);
+                const reachedMaxTime = t >= +(node.simulation?.anomaly?.max || 60);
+                const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
+
+                function increaseTimePassed() {
+                    Logger.info(`Time passed: ${t} / ${node.simulation?.anomaly?.max || 1}`)
+                    t++;
+                }
+
+                function setAnomalyValue() {
+                    node.value = node.simulation?.anomaly?.targetValue || true;
+                    Logger.info(`Conditions for anomaly met. Set node value to ${node.value}`)
+                    t = 0;
+                }
+
+                function handleBetweenMixAndMax() {
+                    const relativeTimePassed = t / (node.simulation?.anomaly?.max || 1)
+                    const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
+                    Logger.info(`Chance to trigger anomaly: ${chanceToTrigger}`)
+                    if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.9)) {
+                        setAnomalyValue()
+                    } else {
+                        increaseTimePassed()
+                    }
+                }
+                if (belowMinTime) {
+                    increaseTimePassed();
+                }
+                if (reachedMaxTime) {
+                    setAnomalyValue()
+                }
+                if (betweenMinAndMax) {
+                    handleBetweenMixAndMax();
+                }
+            }
+
+            setInterval(anomaly, (interval || 1) * 1000);
+        }
     }
 
     private inferValueType(value: string | number | boolean) {

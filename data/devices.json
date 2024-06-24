@@ -278,5 +278,36 @@
                 ]
             }
         ]
+    },
+    "AGV-z6000_1": {
+        "name": "Zentrale AGV",
+        "items": [
+            {
+                "name": "AGV",
+                "id": "ns=0;b=4000",
+                "items": [
+                    {
+                        "name": "Aktiv",
+                        "id": "ns=1;b=4001CCUU",
+                        "value": true,
+                        "valueMethods": [
+                            "get",
+                            "set"
+                        ],
+                        "simulation": {
+                            "type": "anomaly",
+                            "interval": 1,
+                            "anomaly": {
+                                "targetValue": false,
+                                "min": 1,
+                                "max": 60,
+                                "ends": false,
+                                "threshold": 0.8
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
     }
 }
