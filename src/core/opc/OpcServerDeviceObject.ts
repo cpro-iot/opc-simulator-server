@@ -110,7 +110,7 @@ export default class ServerDeviceObject {
             let t = 0;
             function anomaly() {
                 const belowMinTime = t <= +(node.simulation?.anomaly?.min || 5);
-                const reachedMaxTime = t >= +(node.simulation?.anomaly?.max || 60);
+                const reachedMaxTime = t >= +(node.simulation?.anomaly?.max || 30);
                 const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
 
                 function increaseTimePassed() {
@@ -128,7 +128,7 @@ export default class ServerDeviceObject {
                     const relativeTimePassed = t / (node.simulation?.anomaly?.max || 1)
                     const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
                     Logger.info(`Chance to trigger anomaly: ${chanceToTrigger}`)
-                    if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.9)) {
+                    if (chanceToTrigger > (node.simulation?.anomaly?.threshold || 0.85)) {
                         setAnomalyValue()
                     } else {
                         increaseTimePassed()
