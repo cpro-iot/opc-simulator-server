@@ -18,7 +18,7 @@
                             },
                             "id": {
                                 "type": "string",
-                                "pattern": "^ns=\\d+;b=[0-9A-F]+$"
+                                "pattern": "^ns=\\d+;b=[0-9A-F]"
                             },
                             "items": {
                                 "type": "array",
