@@ -87,9 +87,6 @@ export default class Simulator {
       this.node.value = +(sinus + offset).toFixed(2);
       this.t++;
     }
-
-    console.log(this.node.value, this.t)
-
     _sinus();
   }
 
