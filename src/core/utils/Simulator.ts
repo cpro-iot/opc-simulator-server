@@ -6,9 +6,11 @@ import Logger from './Logger';
 export default class Simulator {
   namespace: Namespace;
   node: DeviceNode;
+  t: number;
   constructor(namespace: Namespace, node: DeviceNode) {
     this.namespace = namespace;
     this.node = node;
+    this.t = 1;
   }
 
   public simulateNodeValue() {
@@ -17,6 +19,7 @@ export default class Simulator {
     if (type !== 'anomaly') {
       setInterval(() => {
         this[type]();
+        if(this.t > 3200) this.t = 1;
       }, (this.node.simulation?.interval || 1) * 1000);
     } else {
       this.anomaly();
@@ -77,42 +80,43 @@ export default class Simulator {
   }
 
   private sinus() {
-    let t = 1;
 
     const _sinus = () => {
-      const sinus = +(this.node.simulation?.sinus?.amplitude || 1) * Math.sin(t / 50);
+      const sinus = +(this.node.simulation?.sinus?.amplitude || 1) * Math.sin(this.t / 50);
       const offset = +(this.node.simulation?.sinus?.offset || 0);
       this.node.value = +(sinus + offset).toFixed(2);
-      if (t++ > 32767) t = 1;
+      this.t++;
     }
+
+    console.log(this.node.value, this.t)
 
     _sinus();
   }
 
   private anomaly() {
     const anomalyDetectionInterval = 10000;
-    let t = 1;
     let anomalyInterval: ReturnType<typeof setInterval>;
     let isActive = true;
 
     const _anomaly = () => {
-      const belowMinTime = t <= +(this.node.simulation?.anomaly?.min || 5);
-      const reachedMaxTime = t >= +(this.node.simulation?.anomaly?.max || 30);
+      if(this.t > 3200) this.t = 1;
+      const belowMinTime = this.t <= +(this.node.simulation?.anomaly?.min || 5);
+      const reachedMaxTime = this.t >= +(this.node.simulation?.anomaly?.max || 30);
       const betweenMinAndMax = !belowMinTime && !reachedMaxTime;
 
       const _increaseTimePassed = () => {
-        Logger.debug(`[Node ${this.node.id}]: Time passed: ${t} / ${this.node.simulation?.anomaly?.max || 1}`)
-        t++;
+        Logger.debug(`[Node ${this.node.id}]: Time passed: ${this.t} / ${this.node.simulation?.anomaly?.max || 1}`)
+        this.t++;
       }
 
       const _setAnomalyValue = () => {
         this.node.value = this.node.simulation?.anomaly?.targetValue as boolean | string | number;
         Logger.debug(`[Node ${this.node.id}]: Conditions for anomaly met. Set node value to ${this.node.value}`)
-        t = 0;
+        this.t = 0;
       }
 
       const _handleBetweenMixAndMax = () => {
-        const relativeTimePassed = t / (this.node.simulation?.anomaly?.max || 1)
+        const relativeTimePassed = this.t / (this.node.simulation?.anomaly?.max || 1)
         const chanceToTrigger = (Math.random() * (Math.random() - relativeTimePassed)) + relativeTimePassed;
         Logger.debug(`[Node ${this.node.id}]: Chance to trigger anomaly: ${chanceToTrigger}`)
         if (chanceToTrigger > (this.node.simulation?.anomaly?.threshold || 0.85)) {
